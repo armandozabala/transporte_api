@@ -20,10 +20,10 @@ function registerOperacion(request, response){
 
 
 
-if ( operacion.nom_empresa != '') {
+if ( operacion.nom_empresa !== '') {
 
 
- connection.query('INSERT INTO operacion SET ?', operacion, function(error, results, fields) {
+ connection.query('INSERT INTO operacion SET ?', operacion, (error, results, fields) => {
 
    console.log(error);
 
@@ -53,7 +53,7 @@ response.send({
 
 function allOperacion(request, response){
 
- connection.query('SELECT * FROM operacion', function(error, results, fields) {
+ connection.query('SELECT * FROM operacion', (error, results, fields) => {
 
    if (results.length > 0) {
 

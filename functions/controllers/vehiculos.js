@@ -4,7 +4,7 @@ var connection = require('../config.js');
 
 function allVehiculos(request, response){
 
- connection.query('SELECT * FROM vehiculo', function(error, results, fields) {
+ connection.query('SELECT * FROM vehiculo', (error, results, fields) => {
 
    if (results.length > 0) {
 

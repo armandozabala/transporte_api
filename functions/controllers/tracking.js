@@ -8,7 +8,7 @@ function getTracking(request, response){
 
      let idOperacion = request.params.idOperacion;
 
-     connection.query('SELECT * FROM rutas WHERE id_operacion = ?', idOperacion , function(error, results, fields) {
+     connection.query('SELECT * FROM rutas WHERE id_operacion = ?', idOperacion , (error, results, fields) => {
     
        if (results.length > 0) {
     
@@ -49,10 +49,10 @@ function trackingEntrega(request, response){
        id_usuario 
    }
  
-   if ( tracking_entrega.id_entrega != '' ) {
+   if ( tracking_entrega.id_entrega !== '' ) {
  
  
-    connection.query('INSERT INTO tracking_entrega SET ?', tracking_entrega, function(error, results, fields) {
+    connection.query('INSERT INTO tracking_entrega SET ?', tracking_entrega, (error, results, fields) => {
  
      console.log(error);
    
@@ -74,5 +74,6 @@ function trackingEntrega(request, response){
  }
 
 module.exports = {
- trackingEntrega
+ trackingEntrega,
+ getTracking
 }

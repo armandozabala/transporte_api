@@ -13,9 +13,9 @@ function registerRecursos(request, response){
    }
 
 
-   if ( recursos.foto != '') {
+   if ( recursos.foto !== '') {
 
-      connection.query('INSERT INTO recursos_ent SET ?', recursos, function(error, results, fields) {
+      connection.query('INSERT INTO recursos_ent SET ?', recursos, (error, results, fields) => {
 
 
          if (results.affectedRows > 0) {
@@ -61,10 +61,10 @@ function registerEntregas(request, response){
    }
 
 
-if ( entregas.estado != '') {
+if ( entregas.estado !== '') {
 
 
- connection.query('INSERT INTO entregas SET ?', entregas, function(error, results, fields) {
+ connection.query('INSERT INTO entregas SET ?', entregas, (error, results, fields) => {
 
 
   if (results.affectedRows > 0) {
@@ -98,7 +98,7 @@ function allEntregas(request, response){
  let idUser = request.params.idUser;
 
 
- connection.query('SELECT * FROM entregas_asignadas WHERE id_usuario = ?', idUser, function(error, results, fields) {
+ connection.query('SELECT * FROM entregas_asignadas WHERE id_usuario = ?', idUser, (error, results, fields) => {
 
    if (results.length > 0) {
 
@@ -134,10 +134,10 @@ function entregasAsignadas(request, response){
        orden   
    }
  
-   if ( entrega_asignada.id_entrega != '' ) {
+   if ( entrega_asignada.id_entrega !== '' ) {
  
  
-    connection.query('INSERT INTO entregas_asignadas SET ?', entrega_asignada, function(error, results, fields) {
+    connection.query('INSERT INTO entregas_asignadas SET ?', entrega_asignada, (error, results, fields) => {
  
      console.log(error);
    

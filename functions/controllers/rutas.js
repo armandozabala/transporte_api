@@ -15,10 +15,10 @@ function registerRuta(request, response){
    }
 
 
-if ( rutas.ruta != '') {
+if ( rutas.ruta !== '') {
 
 
- connection.query('INSERT INTO rutas SET ?', rutas, function(error, results, fields) {
+ connection.query('INSERT INTO rutas SET ?', rutas, (error, results, fields) => {
 
    console.log(error);
 
@@ -50,7 +50,7 @@ function allRutas(request, response){
 
  let idOperacion = request.params.idOperacion;
 
- connection.query('SELECT * FROM rutas WHERE id_operacion = ?', idOperacion , function(error, results, fields) {
+ connection.query('SELECT * FROM rutas WHERE id_operacion = ?', idOperacion , (error, results, fields) => {
 
    if (results.length > 0) {
 

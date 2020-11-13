@@ -4,7 +4,7 @@ var connection = require('../config.js');
 
 function allDepartamentos(request, response){
 
- connection.query('SELECT * FROM departamentos', function(error, results, fields) {
+ connection.query('SELECT * FROM departamentos', (error, results, fields) => {
 
    if (results.length > 0) {
 

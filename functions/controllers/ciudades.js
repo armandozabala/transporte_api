@@ -6,7 +6,7 @@ function allCiudades(request, response){
 
  let idDepartamento = request.params.idDepartamento;
 
- connection.query('SELECT * FROM ciudades WHERE id_departamento = ?', idDepartamento, function(error, results, fields) {
+ connection.query('SELECT * FROM ciudades WHERE id_departamento = ?', idDepartamento, (error, results, fields) => {
 
    if (results.length > 0) {
 

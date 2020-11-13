@@ -16,10 +16,10 @@ function usersOperations(request, response){
       id_operacion: idOperacion
   }
 
-  if ( idUsuario != '' && idOperacion != '' ) {
+  if ( idUsuario !== '' && idOperacion !== '' ) {
 
 
-   connection.query('INSERT INTO usuarios_operacion SET ?', usuario_operacion, function(error, results, fields) {
+   connection.query('INSERT INTO usuarios_operacion SET ?', usuario_operacion, (error, results, fields) => {
 
     console.log(error);
   
@@ -51,12 +51,12 @@ function loginUser(request, response){
        password: request.body.password
     }
 
-    if ( user.email != '' && user.password != '' ) {
+    if ( user.email !== '' && user.password !== '' ) {
 
-            connection.query('SELECT * FROM users WHERE email = ?', user.email, function(error, results, fields) { 
+            connection.query('SELECT * FROM users WHERE email = ?', user.email, (error, results, fields) => { 
 
 
-                  if(results.length == []){
+                  if(results.length === []){
 
                       response.send({
                         ok : false,
@@ -66,23 +66,23 @@ function loginUser(request, response){
 
                   }else{
 
-                    bcrypt.compare(user.password, results[0].password).then(function(result) {
+                    bcrypt.compare(user.password, results[0].password).then(result => {
                       
-                          if(!result){
-
+               
                             response.send({
                               ok : result,
-                              msj: 'Username and Password are Incorrect.'
+                              msj: 'Login Access'
                             });
 
-                          }else{
+                            return result;
 
-                            response.send({
-                              ok : true
-                            });
 
-                          }
-                    
+                      }).catch(err =>{
+
+                          response.send({
+                            ok : err,
+                            msj: 'Username and Password are Incorrect.'
+                          });
 
                      });
 
@@ -106,37 +106,39 @@ function loginUser(request, response){
  }
 
 
-function registerUser(request, response){
+ function registerUser(request, response){
 
  let user;
 
- bcrypt.hash(request.body.password, BCRYPT_SALT_ROUNDS).then((hashedPassword) => {
-
-
-    user = {
-     username: request.body.username,
-     password: hashedPassword,
-     email: request.body.email,
-     nombres:  request.body.nombres,
-     apellidos:  request.body.apellidos,
-     tipo_documento: request.body.tipo_documento,
-     cedula: request.body.cedula,
-     created_on: new Date().getTime() / 1000,
-     fecha_nacimiento: new Date(),
-     edad: request.body.edad,
-     telefono:  request.body.telefono,
-     direccion:  request.body.direccion,
-     id_departamento: 1,
-     id_ciudad: 1,
-     id_tipous: 1
-   }
 
 
 
+ user = {
+  username: request.body.username,
+  password: request.body.password,
+  email: request.body.email,
+  nombres:  request.body.nombres,
+  apellidos:  request.body.apellidos,
+  tipo_documento: request.body.tipo_documento,
+  cedula: request.body.cedula,
+  created_on: new Date().getTime() / 1000,
+  fecha_nacimiento: new Date(),
+  edad: request.body.edad,
+  telefono:  request.body.telefono,
+  direccion:  request.body.direccion,
+  id_departamento: 1,
+  id_ciudad: 1,
+  id_tipous: 1
+}
 
-if ( user.username != '' && user.password != '' ) {
 
-connection.query('SELECT * FROM users WHERE email = ?', user.email, function(error, results, fields) {
+
+
+if ( user.username !== '' && user.password !== '' ) {
+
+
+
+connection.query('SELECT * FROM users WHERE email = ?', user.email, (error, results, fields) => {
 
 
 
@@ -147,40 +149,58 @@ if (results.length > 0) {
          msj: 'Email Exist'
      });
 
+
+    
 }else{
 
- connection.query('INSERT INTO users SET ?', user, function(error, results, fields) {
+  bcrypt.hash(request.body.password, BCRYPT_SALT_ROUNDS).then((hash) => {
 
-  console.log(error);
+    user.password = hash;
 
-  if (results.insertId > 0) {
+    connection.query('INSERT INTO users SET ?', user, (error, results, fields)=>  {
 
-   response.send({
-       ok : true,
-       msj: 'Register Success',
-       iduser: results.insertId
-   });
+      console.log(error);
+  
+      if (results.insertId > 0) {
+  
+          response.send({
+              ok : true,
+              msj: 'Register Success',
+              iduser: results.insertId
+          });
+
+         
+      }
+    });
+
+    return hash;
+
+  }).catch((err)=>{
+      console.log(err);
+  })
+
+
   }
- });
-}
-});
+  });
+
+
 
 } else {
-response.send({
- ok : false,
- msj: 'Username and Password are empty'
-});
+  response.send({
+  ok : false,
+  msj: 'Username and Password are empty'
+  });
 
 }
 
- });
+
 
 }
 
 
 function allUsers(request, response){
 
- connection.query('SELECT * FROM users', function(error, results, fields) {
+ connection.query('SELECT * FROM users', (error, results, fields) => {
 
    if (results.length > 0) {
 

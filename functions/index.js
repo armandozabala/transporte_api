@@ -3,6 +3,11 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 
+var app = express();
+app.use(cors());
+app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.json());
+
 
 const userCtrl = require('./controllers/user');
 const customersCtrl = require('./controllers/customers');
@@ -15,17 +20,14 @@ const estadoCtrl = require('./controllers/estados');
 const entregasCtrl = require('./controllers/entregas');
 const trackingCtrl = require('./controllers/tracking');
 
-var app = express();
-app.use(cors());
-app.use(bodyParser.urlencoded({extended : true}));
-app.use(bodyParser.json());
+
 
 
 app.get('/',(req, res) => {
 
    res.json({
       ok: true,
-      msg: 'Welcome'
+      msg: 'Welcome Transporte API'
    })
 
 });
@@ -75,4 +77,4 @@ app.get('/allcustomers', customersCtrl.allCustomers);
 app.post('/tracking', trackingCtrl.trackingEntrega);
 
 
-exports.api = functions.https.onRequest(app);
+exports.app = functions.https.onRequest(app);

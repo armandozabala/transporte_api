@@ -14,10 +14,10 @@ function registerEstado(request, response){
    }
 
 
-if ( estados.estado != '') {
+if ( estados.estado !== '') {
 
 
- connection.query('INSERT INTO estados SET ?', estados, function(error, results, fields) {
+ connection.query('INSERT INTO estados SET ?', estados, (error, results, fields) => {
 
 
   if (results.affectedRows > 0) {
@@ -46,9 +46,8 @@ response.send({
 
 function allEstados(request, response){
 
- let idOperacion = request.params.idOperacion;
 
- connection.query('SELECT * FROM estados', function(error, results, fields) {
+ connection.query('SELECT * FROM estados', (error, results, fields) => {
 
    if (results.length > 0) {
        response.send({ 

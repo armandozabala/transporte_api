@@ -27,10 +27,10 @@ function registerCustomers(request, response){
       }
    
    
-   if ( customers.razon_social != '') {
+   if ( customers.razon_social !== '') {
    
    
-    connection.query('INSERT INTO cliente SET ?', customers, function(error, results, fields) {
+    connection.query('INSERT INTO cliente SET ?', customers, (error, results, fields) => {
    
    
      if (results.affectedRows > 0) {
@@ -60,7 +60,7 @@ function registerCustomers(request, response){
 
 function allCustomers(request, response){
 
- connection.query('SELECT * FROM cliente', function(error, results, fields) {
+ connection.query('SELECT * FROM cliente', (error, results, fields) => {
 
    if (results.length > 0) {
 
