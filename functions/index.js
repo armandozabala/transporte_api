@@ -2,11 +2,18 @@ var functions = require('firebase-functions');
 var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('cors');
+const fileMiddleware = require('express-multipart-file-parser')
+
+
+
 
 var app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
+app.use(fileMiddleware);
+
+
 
 
 const userCtrl = require('./controllers/user');
@@ -19,7 +26,7 @@ const rutasCtrl = require('./controllers/rutas');
 const estadoCtrl = require('./controllers/estados');
 const entregasCtrl = require('./controllers/entregas');
 const trackingCtrl = require('./controllers/tracking');
-
+const fileCtrl = require('./controllers/file');
 
 
 
@@ -31,6 +38,9 @@ app.get('/',(req, res) => {
    })
 
 });
+
+//upload
+app.post('/file', fileCtrl.uploads);
 
 
 //Login Users
