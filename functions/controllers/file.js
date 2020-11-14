@@ -1,5 +1,6 @@
 'use strict'
 const { Storage } = require('@google-cloud/storage');
+const { v4 } = require('uuid');
 
 const storage = new Storage({
  projectId: 'restaurantearm',
@@ -12,6 +13,8 @@ const bucket = storage.bucket('restaurantearm.appspot.com');
 
  function uploads(request, response){
 
+   let paths = request.params.path;
+
    const {
     fieldname,
     filename,
@@ -21,18 +24,18 @@ const bucket = storage.bucket('restaurantearm.appspot.com');
     buffer,
   } = request.files[0]
 
-  files(request.files[0]).then(res => {
 
-    response.json({
-      res
-    });
+
+  uploadFiles(paths, request.files[0]).then(res => {
+
+     console.log(res);
+     response.json({
+       res
+     })
 
   }).catch(err =>{
+
     console.log(err);
-    
-    response.json({
-     err
-   });
 
   })
 
@@ -40,18 +43,24 @@ const bucket = storage.bucket('restaurantearm.appspot.com');
 
 }
 
-const files = (file) => {
+function uploadFiles(path, file){
 
  return new Promise((resolve, reject) => {
 
-  console.log(file);
 
- const blob = bucket.file(file.originalname);
+ const blob = bucket.file(decodeURIComponent(path+"%2F"+file.originalname));
+
+ 
+ let token = v4();
 
  // Create writable stream and specifying file mimetype
  const blobWriter = blob.createWriteStream({
    metadata: {
      contentType: file.mimetype,
+     metadata: {
+      firebaseStorageDownloadTokens: token
+    }
+    
    },
  });
 
@@ -62,9 +71,12 @@ const files = (file) => {
 
  blobWriter.on('finish', () => {
    // Assembling public URL for accessing the file via HTTP
+
+   let name = blob.name.replace("/", "%2F");
+
    const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${
      bucket.name
-   }/o/${encodeURI(blob.name)}?alt=media`;
+   }/o/${name}?alt=media`;
 
    // Return the file name and its public URL
    /*res
@@ -82,5 +94,6 @@ const files = (file) => {
 }
 
 module.exports = {
- uploads
+ uploads,
+ uploadFiles
 }

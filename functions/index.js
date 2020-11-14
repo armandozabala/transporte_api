@@ -40,7 +40,7 @@ app.get('/',(req, res) => {
 });
 
 //upload
-app.post('/file', fileCtrl.uploads);
+app.post('/file/:path', fileCtrl.uploads);
 
 
 //Login Users

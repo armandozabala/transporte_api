@@ -1,8 +1,10 @@
 'use strict'
 
+var fileCtrl = require('./file');
 var connection = require('../config.js');
 const bcrypt = require('bcrypt');
 const BCRYPT_SALT_ROUNDS = 12;
+
 
 
 
@@ -106,12 +108,11 @@ function loginUser(request, response){
  }
 
 
- function registerUser(request, response){
+function registerUser(request, response){
 
  let user;
 
-
-
+ let photo = request.files[0];
 
  user = {
   username: request.body.username,
@@ -128,7 +129,8 @@ function loginUser(request, response){
   direccion:  request.body.direccion,
   id_departamento: 1,
   id_ciudad: 1,
-  id_tipous: 1
+  id_tipous: 1,
+  foto: ''
 }
 
 
@@ -150,17 +152,18 @@ if (results.length > 0) {
      });
 
 
-    
 }else{
 
-  bcrypt.hash(request.body.password, BCRYPT_SALT_ROUNDS).then((hash) => {
+  bcrypt.hash(request.body.password, BCRYPT_SALT_ROUNDS).then(async (hash) => {
 
     user.password = hash;
 
+    user.foto = await fileCtrl.uploadFiles('users',photo);
+
+
     connection.query('INSERT INTO users SET ?', user, (error, results, fields)=>  {
 
-      console.log(error);
-  
+
       if (results.insertId > 0) {
   
           response.send({
