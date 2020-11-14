@@ -58,9 +58,9 @@ function loginUser(request, response){
             connection.query('SELECT * FROM users WHERE email = ?', user.email, (error, results, fields) => { 
 
 
-                  if(results.length === []){
+                  if(results.length === 0){
 
-                      response.send({
+                      response.json({
                         ok : false,
                         msj: 'Username and Password are Incorrect'
                     });
@@ -71,7 +71,7 @@ function loginUser(request, response){
                     bcrypt.compare(user.password, results[0].password).then(result => {
                       
                
-                            response.send({
+                            response.json({
                               ok : result,
                               msj: 'Login Access'
                             });
@@ -81,7 +81,7 @@ function loginUser(request, response){
 
                       }).catch(err =>{
 
-                          response.send({
+                          response.json({
                             ok : err,
                             msj: 'Username and Password are Incorrect.'
                           });
@@ -98,7 +98,7 @@ function loginUser(request, response){
     } 
     else {
       
-        response.send({
+        response.json({
             ok : false,
             msj: 'Username and Password are Incorrect'
         });

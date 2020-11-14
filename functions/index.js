@@ -53,9 +53,11 @@ app.post('/auth', userCtrl.loginUser);
 app.get('/alldepartamentos', departamentosCtrl.allDepartamentos);
 //ciudades
 app.get('/allciudades/:idDepartamento', ciudadesCtrl.allCiudades);
+
+
 //vehiculos
 app.get('/allvehiculos', vehiculosCtrl.allVehiculos);
-
+app.post('/registervehiculo', vehiculosCtrl.registerVehiculo);
 
 //operacion
 app.post('/registeroperacion', operacionCtrl.registerOperacion);
