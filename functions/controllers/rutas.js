@@ -2,6 +2,60 @@
 
 var connection = require('../config.js');
 
+function editRuta(request, response){
+
+   let idRuta = request.params.id;
+   let ruta = request.body.ruta;
+   
+    connection.query('UPDATE rutas  SET ruta= ? WHERE id_ruta= ?', [ruta, idRuta], (error, results, fields) => {
+   
+
+     if (results.affectedRows > 0) {
+   
+             response.send({
+                  ok : true,
+                  msj: 'Update Ruta Success'
+             });
+ 
+     }else{
+ 
+             response.send({
+                  ok : true,
+                  msj: 'Ruta ID not exist'
+             });
+ 
+     }
+    
+     });
+   
+ }
+
+
+function deleteRuta(request, response){
+
+   let idRuta = request.params.id;
+   
+    connection.query('DELETE FROM rutas WHERE id_ruta= ?', idRuta, (error, results, fields) => {
+   
+     if (results.affectedRows > 0) {
+   
+             response.send({
+                  ok : true,
+                  msj: 'Delete Ruta Success'
+             });
+ 
+     }else{
+ 
+             response.send({
+                  ok : true,
+                  msj: 'Ruta ID not exist'
+             });
+ 
+     }
+    
+     });
+   
+ }
 
 function registerRuta(request, response){
 
@@ -75,5 +129,7 @@ function allRutas(request, response){
 
 module.exports = {
  registerRuta,
- allRutas
+ allRutas,
+ deleteRuta,
+ editRuta
 }

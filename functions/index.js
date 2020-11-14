@@ -62,14 +62,20 @@ app.delete('/vehiculo/:id', vehiculosCtrl.deleteVehiculo);
 app.post('/registeroperacion', operacionCtrl.registerOperacion);
 app.get('/alloperacion',  operacionCtrl.allOperacion);
 app.delete('/operacion/:id', operacionCtrl.deleteOperacion);
+app.put('/operacion/:id', operacionCtrl.editOperacion);
 
 //rutas
 app.get('/allrutas/:idOperacion', rutasCtrl.allRutas);
 app.post('/registerruta', rutasCtrl.registerRuta);
+app.delete('/ruta/:id', rutasCtrl.deleteRuta);
+app.put('/ruta/:id', rutasCtrl.editRuta);
+
 
 //usuarios-operacion
 app.post('/usuariosoperacion', userCtrl.usersOperations);
 app.delete('/usuariosoperacion/:idusuario', userCtrl.deleteUsuarioOperacion);
+
+
 
 //estados
 app.post('/registerestado', estadoCtrl.registerEstado);
