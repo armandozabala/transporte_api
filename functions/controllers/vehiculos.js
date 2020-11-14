@@ -11,7 +11,7 @@ function registerVehiculo(request, response){
 
      connection.query('SELECT * FROM vehiculo WHERE placas = ?', request.body.placas ,(error, results, fields) => {
 
-               if(results.length == 0){
+               if(results.length === 0){
 
                     cars = {
                          id_usuario: request.body.id_usuario,
