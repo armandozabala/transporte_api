@@ -84,6 +84,7 @@ app.post('/recursosentregas', entregasCtrl.registerRecursos);
 //customers
 app.post('/registercustomer', customersCtrl.registerCustomers);
 app.get('/allcustomers', customersCtrl.allCustomers);
+app.delete('/customers/:idcustomer', customersCtrl.deleteCustomer);
 
 //tracking
 app.post('/tracking', trackingCtrl.trackingEntrega);

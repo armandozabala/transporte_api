@@ -3,6 +3,25 @@
 var connection = require('../config.js');
 
 
+function deleteCustomer(request, response){
+
+  let customers = request.params.idcustomer;
+  
+   connection.query('DELETE FROM cliente WHERE id_cliente= ?', customers, (error, results, fields) => {
+  
+    if (results.affectedRows > 0) {
+  
+     response.send({
+         ok : true,
+         msj: 'Delete Cliente Success'
+     });
+    }
+   
+    });
+  
+}
+
+
 function registerCustomers(request, response){
 
     let customers;
@@ -83,5 +102,6 @@ function allCustomers(request, response){
 
 module.exports = {
  allCustomers,
- registerCustomers
+ registerCustomers,
+ deleteCustomer
 }
