@@ -28,10 +28,12 @@ const bucket = storage.bucket('restaurantearm.appspot.com');
 
   uploadFiles(paths, request.files[0]).then(res => {
 
-     console.log(res);
+  
      response.json({
        res
-     })
+     });
+
+     return res;
 
   }).catch(err =>{
 
@@ -47,8 +49,11 @@ function uploadFiles(path, file){
 
  return new Promise((resolve, reject) => {
 
+ 
+  const name = (+new Date()) + '_' + file.originalname;
 
- const blob = bucket.file(decodeURIComponent(path+"%2F"+file.originalname));
+
+ const blob = bucket.file(decodeURIComponent(path+"%2F"+name));
 
  
  let token = v4();
@@ -65,7 +70,7 @@ function uploadFiles(path, file){
  });
 
  blobWriter.on('error', (err) => {
-   reject('Something is wrong! Unable to upload at the moment.'+err);
+   reject(err);
   //next(err)
  });
 
