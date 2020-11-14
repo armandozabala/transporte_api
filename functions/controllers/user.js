@@ -6,6 +6,35 @@ const bcrypt = require('bcrypt');
 const BCRYPT_SALT_ROUNDS = 12;
 
 
+function deleteUsuarioOperacion(request, response){
+
+
+    let usuario_operacion = {
+        id_usuario: request.params.idusuario
+    }
+   
+    connection.query('DELETE FROM usuarios_operacion WHERE id_usuario = ?', usuario_operacion.id_usuario, (error, results, fields) => {
+      
+   
+     if (results.affectedRows > 0) {
+   
+        response.send({
+            ok : true,
+            msj: 'Delete Usuario-Operacion Success'
+        });
+       
+     }else{
+ 
+       response.send({
+         ok : false,
+         msj: 'Usuario-Operacion ID no exist'
+       });
+     }
+    
+     });
+   
+ }
+ 
 
 
 function usersOperations(request, response){
@@ -231,5 +260,6 @@ module.exports = {
  allUsers,
  registerUser,
  usersOperations,
- loginUser
+ loginUser,
+ deleteUsuarioOperacion
 }

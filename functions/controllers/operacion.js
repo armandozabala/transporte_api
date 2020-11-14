@@ -2,6 +2,33 @@
 
 var connection = require('../config.js');
 
+function deleteOperacion(request, response){
+
+  let idOperacion = request.params.id;
+  
+   connection.query('DELETE FROM operacion WHERE id_operacion= ?', idOperacion, (error, results, fields) => {
+  
+    if (results.affectedRows > 0) {
+  
+            response.send({
+                 ok : true,
+                 msj: 'Delete Operacion Success'
+            });
+
+    }else{
+
+            response.send({
+                 ok : true,
+                 msj: 'Operacion ID not exist'
+            });
+
+    }
+   
+    });
+  
+}
+
+
 
 function registerOperacion(request, response){
 
@@ -79,5 +106,6 @@ function allOperacion(request, response){
 
 module.exports = {
  registerOperacion,
- allOperacion
+ allOperacion,
+ deleteOperacion
 }

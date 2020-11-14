@@ -3,6 +3,25 @@
 var connection = require('../config.js');
 
 
+function deleteEstado(request, response){
+
+   let estado = request.params.idestado;
+   
+    connection.query('DELETE FROM estados WHERE id_estado= ?', estado, (error, results, fields) => {
+   
+     if (results.affectedRows > 0) {
+   
+      response.send({
+          ok : true,
+          msj: 'Delete Estado Success'
+      });
+     }
+    
+     });
+   
+ }
+
+
 function registerEstado(request, response){
 
  let estados;
@@ -71,5 +90,6 @@ function allEstados(request, response){
 
 module.exports = {
  registerEstado,
- allEstados
+ allEstados,
+ deleteEstado
 }

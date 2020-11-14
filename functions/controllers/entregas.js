@@ -3,6 +3,34 @@
 var connection = require('../config.js');
 
 
+function deleteEntrega(request, response){
+
+  let entrega = request.params.id;
+  
+   connection.query('DELETE FROM entregas WHERE id_entrega = ?', entrega, (error, results, fields) => {
+     
+  
+    if (results.affectedRows > 0) {
+  
+      response.send({
+          ok : true,
+          msj: 'Delete Entrega Success'
+      });
+      
+    }else{
+
+      response.send({
+        ok : false,
+        msj: 'Entrega no exist'
+      });
+    }
+   
+    });
+  
+}
+
+
+
 function registerRecursos(request, response){
 
    let recursos;
@@ -162,5 +190,6 @@ module.exports = {
  allEntregas,
  registerEntregas,
  entregasAsignadas,
- registerRecursos
+ registerRecursos,
+ deleteEntrega
 }

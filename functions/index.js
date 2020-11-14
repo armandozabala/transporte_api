@@ -5,14 +5,11 @@ var cors = require('cors');
 const fileMiddleware = require('express-multipart-file-parser')
 
 
-
-
 var app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 app.use(fileMiddleware);
-
 
 
 
@@ -25,6 +22,7 @@ const operacionCtrl = require('./controllers/operacion');
 const rutasCtrl = require('./controllers/rutas');
 const estadoCtrl = require('./controllers/estados');
 const entregasCtrl = require('./controllers/entregas');
+const devolucionesCtrl = require('./controllers/devoluciones');
 const trackingCtrl = require('./controllers/tracking');
 const fileCtrl = require('./controllers/file');
 
@@ -58,10 +56,12 @@ app.get('/allciudades/:idDepartamento', ciudadesCtrl.allCiudades);
 //vehiculos
 app.get('/allvehiculos', vehiculosCtrl.allVehiculos);
 app.post('/registervehiculo', vehiculosCtrl.registerVehiculo);
+app.delete('/vehiculo/:id', vehiculosCtrl.deleteVehiculo);
 
 //operacion
 app.post('/registeroperacion', operacionCtrl.registerOperacion);
 app.get('/alloperacion',  operacionCtrl.allOperacion);
+app.delete('/operacion/:id', operacionCtrl.deleteOperacion);
 
 //rutas
 app.get('/allrutas/:idOperacion', rutasCtrl.allRutas);
@@ -69,17 +69,25 @@ app.post('/registerruta', rutasCtrl.registerRuta);
 
 //usuarios-operacion
 app.post('/usuariosoperacion', userCtrl.usersOperations);
+app.delete('/usuariosoperacion/:idusuario', userCtrl.deleteUsuarioOperacion);
 
 //estados
 app.post('/registerestado', estadoCtrl.registerEstado);
 app.get('/allestados', estadoCtrl.allEstados);
+app.delete('/estado/:idestado', estadoCtrl.deleteEstado);
+
+
 
 //entregas por idUser / fecha Ini - Fecha Fin
 app.get('/allentregas/:idUser', entregasCtrl.allEntregas);
 app.post('/registerentregas', entregasCtrl.registerEntregas);
 app.post('/entregasasignadas', entregasCtrl.entregasAsignadas);
 app.post('/recursosentregas', entregasCtrl.registerRecursos);
+app.delete('/entrega/:id', entregasCtrl.deleteEntrega);
 
+//devoluciones
+app.post('/registerdevolucion', devolucionesCtrl.registerDevolucion);
+app.delete('/devolucion/:idEntrega', devolucionesCtrl.deleteDevolucion);
 
 //customers
 app.post('/registercustomer', customersCtrl.registerCustomers);

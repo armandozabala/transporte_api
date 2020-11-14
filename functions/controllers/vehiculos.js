@@ -3,6 +3,33 @@
 var connection = require('../config.js');
 
 
+function deleteVehiculo(request, response){
+
+     let idvehiculo = request.params.id;
+     
+      connection.query('DELETE FROM vehiculo WHERE id_vehiculo= ?', idvehiculo, (error, results, fields) => {
+     
+       if (results.affectedRows > 0) {
+     
+               response.send({
+                    ok : true,
+                    msj: 'Delete Vehiculo Success'
+               });
+
+       }else{
+
+               response.send({
+                    ok : true,
+                    msj: 'Vehiculo not exist'
+               });
+
+       }
+      
+       });
+     
+   }
+
+
 function registerVehiculo(request, response){
 
      let cars;
@@ -78,5 +105,6 @@ function allVehiculos(request, response){
 
 module.exports = {
  allVehiculos,
- registerVehiculo
+ registerVehiculo,
+ deleteVehiculo
 }
