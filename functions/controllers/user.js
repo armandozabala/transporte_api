@@ -137,6 +137,95 @@ function loginUser(request, response){
  }
 
 
+ function updateUser(request, response){
+
+  let user;
+ 
+  let photo = request.files[0];
+  let email = request.body.email;
+
+  user = {
+   username: request.body.username,
+   password: request.body.password,
+   nombres:  request.body.nombres,
+   apellidos:  request.body.apellidos,
+   tipo_documento: request.body.tipo_documento,
+   cedula: request.body.cedula,
+   created_on: new Date().getTime() / 1000,
+   fecha_nacimiento: request.body.fecha_nacimiento,
+   edad: request.body.edad,
+   telefono:  request.body.telefono,
+   direccion:  request.body.direccion,
+   id_departamento: 1,
+   id_ciudad: 1,
+   id_tipous: 1,
+   foto: ''
+ }
+ 
+ 
+ 
+ if ( user.email !== '') {
+ 
+ 
+ connection.query( `SELECT * FROM users WHERE email = ?`, email, (error, results, fields) => {
+
+
+ if (!results.length > 0) {
+ 
+      response.send({
+          ok : false,
+          msj: 'Email Wrong'
+      });
+ 
+ 
+ }else{
+ 
+   bcrypt.hash(request.body.password, BCRYPT_SALT_ROUNDS).then(async (hash) => {
+ 
+     user.password = hash;
+ 
+     user.foto = await fileCtrl.uploadFiles('users',photo);
+ 
+ 
+     connection.query(`UPDATE users  SET username = ?, password = ? , nombres = ?, apellidos = ?, tipo_documento = ?, cedula = ?, telefono = ?, direccion = ? , id_tipous = ?, fecha_nacimiento = ? WHERE email = ?`, [user.username, user.password, user.nombres, user.apellidos, user.tipo_documento, user.cedula, user.telefono, user.direccion, user.id_tipous, user.fecha_nacimiento,  email], (error, results, fields)=>  {
+ 
+ 
+       if (results.affectedRows > 0) {
+   
+           response.send({
+               ok : true,
+               msj: 'Users Update Success'
+           });
+ 
+          
+       }
+     });
+ 
+     return hash;
+ 
+   }).catch((err)=>{
+       console.log(err);
+   })
+ 
+ 
+   }
+   });
+ 
+ 
+ 
+ } else {
+   response.send({
+   ok : false,
+   msj: 'Email and Password are empty'
+   });
+ 
+ }
+ 
+ 
+ 
+ }
+
+
 function registerUser(request, response){
 
  let user;
@@ -232,13 +321,46 @@ if (results.length > 0) {
 
 function allUsers(request, response){
 
- connection.query('SELECT * FROM users', (error, results, fields) => {
+
+ connection.query(`SELECT * FROM users`, (error, results, fields) => {
 
    if (results.length > 0) {
 
-       response.send({
-    
-           iduser: results
+        response.send({
+          size: results.length,
+          results
+       });
+
+  }else{
+
+     response.send({
+      ok : false,
+      msj: 'Incorrect'
+     });
+
+  }
+
+ });
+
+}
+
+
+function allUsersPaginate(request, response){
+
+  const limit = 20
+  // page number
+  const page = request.query.page
+  // calculate offset
+  const offset = (page - 1) * limit
+
+ connection.query(`SELECT * FROM users limit ${limit} OFFSET ${offset}`, (error, results, fields) => {
+
+   if (results.length > 0) {
+
+        response.send({
+          'users_page_count':results.length,
+          'page_number':page,
+          'users':results
        });
 
   }else{
@@ -261,5 +383,6 @@ module.exports = {
  registerUser,
  usersOperations,
  loginUser,
- deleteUsuarioOperacion
+ deleteUsuarioOperacion,
+ updateUser
 }

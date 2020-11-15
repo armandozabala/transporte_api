@@ -77,14 +77,49 @@ function registerCustomers(request, response){
    }
 
 
-function allCustomers(request, response){
+   function allCustomers(request, response){
 
- connection.query('SELECT * FROM cliente', (error, results, fields) => {
+
+        connection.query(`SELECT * FROM cliente`, (error, results, fields) => {
+
+        if (results.length > 0) {
+
+            response.send({
+                size: results.length,  
+                results
+            });
+
+        }else{
+
+            response.send({
+            ok : false,
+            msj: 'Incorrect Customers'
+            });
+
+        }
+
+        });
+
+    }
+
+
+   function allCustomersPaginate(request, response){
+
+    const limit = 20
+    // page number
+    const page = request.query.page
+    // calculate offset
+    const offset = (page - 1) * limit
+
+
+ connection.query(`SELECT * FROM cliente limit ${limit} OFFSET ${offset}`, (error, results, fields) => {
 
    if (results.length > 0) {
 
        response.send({
-           results
+           'customersa_page_count':results.length,
+           'page_number':page,
+           'customers':results
        });
 
   }else{

@@ -50,7 +50,7 @@ function uploadFiles(path, file){
  return new Promise((resolve, reject) => {
 
  
-  const name = (new Date()) + '_' + file.originalname;
+  const name = (new Date().getTime() / 1000) + '_' + file.originalname;
 
 
  const blob = bucket.file(decodeURIComponent(path+"%2F"+name));

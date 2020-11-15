@@ -126,7 +126,7 @@ function allEntregas(request, response){
  let idUser = request.params.idUser;
 
 
- connection.query('SELECT * FROM entregas_asignadas WHERE id_usuario = ?', idUser, (error, results, fields) => {
+ connection.query('SELECT * FROM entregas_asignadas WHERE id_usuario = ? AND  DATE(fecha_asignacion) = CURDATE()', idUser, (error, results, fields) => {
 
    if (results.length > 0) {
 
@@ -186,10 +186,60 @@ function entregasAsignadas(request, response){
  
  }
 
+
+ function reportarEntrega(request, response){
+
+        
+          let id_entrega = request.body.id_entrega;
+          let id_usuario = request.body.id_usuario;
+          let estado = request.body.estado;
+          let observacion = request.body.observacion === "" ? " ": request.body.observacion;
+          let latitud = request.body.latitud === "" ? 0 : request.body.latitud;
+          let longitud = request.body.longitud === "" ? 0 : request.body.longitud;
+
+          connection.query('UPDATE entregas_asignadas  SET fecha_ejecucion= ? WHERE id_entrega= ?', [ new Date(), id_entrega], (error, results, fields) => {
+ 
+    
+            if (results.affectedRows > 0) {
+          
+       
+
+              connection.query('UPDATE entregas SET estado= ?, observacion = ?, latitud = ?, longitud = ? WHERE id_entrega= ?', [ estado, observacion, latitud, longitud, id_entrega], (error, results, fields) => {
+
+
+                if (results.affectedRows > 0) {
+
+                    response.send({
+                      ok : true,
+                      msj: 'Report Entregas Asignadas Success',
+                  });
+
+                }
+
+                 
+
+              })
+        
+            }else{
+
+              response.send({
+                ok : false,
+                msj: 'Entrega no asigned Error'
+            });
+
+            }
+
+
+           });
+
+
+ }
+
 module.exports = {
  allEntregas,
  registerEntregas,
  entregasAsignadas,
  registerRecursos,
- deleteEntrega
+ deleteEntrega,
+ reportarEntrega
 }

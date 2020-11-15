@@ -45,6 +45,7 @@ app.post('/file/:path', fileCtrl.uploads);
 app.post('/registeruser', userCtrl.registerUser);
 app.get('/allusers',  userCtrl.allUsers);
 app.post('/auth', userCtrl.loginUser);
+app.put('/user', userCtrl.updateUser);
 
 
 //departamentos
@@ -90,6 +91,8 @@ app.post('/registerentregas', entregasCtrl.registerEntregas);
 app.post('/entregasasignadas', entregasCtrl.entregasAsignadas);
 app.post('/recursosentregas', entregasCtrl.registerRecursos);
 app.delete('/entrega/:id', entregasCtrl.deleteEntrega);
+app.put('/reportarentrega', entregasCtrl.reportarEntrega);
+
 
 //devoluciones
 app.post('/registerdevolucion', devolucionesCtrl.registerDevolucion);
@@ -102,6 +105,7 @@ app.delete('/customers/:idcustomer', customersCtrl.deleteCustomer);
 
 //tracking
 app.post('/tracking', trackingCtrl.trackingEntrega);
+app.get('/tracking/:idUser', trackingCtrl.getTracking);
 
 
 exports.app = functions.https.onRequest(app);

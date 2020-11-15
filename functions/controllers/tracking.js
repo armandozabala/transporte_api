@@ -2,13 +2,12 @@
 
 var connection = require('../config.js');
 
+
 function getTracking(request, response){
 
-     let fecha = request.body.fecha;
+     let idusuario = request.params.idUser;
 
-     let idOperacion = request.params.idOperacion;
-
-     connection.query('SELECT * FROM rutas WHERE id_operacion = ?', idOperacion , (error, results, fields) => {
+     connection.query('SELECT * FROM tracking_entrega WHERE id_usuario = ? AND  DATE(fecha) = CURDATE()', idusuario , (error, results, fields) => {
     
        if (results.length > 0) {
     
