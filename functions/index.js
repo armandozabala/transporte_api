@@ -43,9 +43,10 @@ app.post('/file/:path', fileCtrl.uploads);
 
 //Login Users
 app.post('/registeruser', userCtrl.registerUser);
-app.get('/allusers',  userCtrl.allUsers);
+app.get('/allusers/:idOperacion',  userCtrl.allUsers);
 app.post('/auth', userCtrl.loginUser);
 app.put('/user', userCtrl.updateUser);
+app.delete('/user/:id', userCtrl.deleteUsuarioOperacion);
 
 
 //departamentos
@@ -86,7 +87,8 @@ app.delete('/estado/:idestado', estadoCtrl.deleteEstado);
 
 
 //entregas por idUser / fecha Ini - Fecha Fin
-app.get('/allentregas/:idUser', entregasCtrl.allEntregas);
+app.get('/allentregas/:idUser', entregasCtrl.allEntregasByUser);
+app.get('/allentregas', entregasCtrl.allEntregas);
 app.post('/registerentregas', entregasCtrl.registerEntregas);
 app.post('/entregasasignadas', entregasCtrl.entregasAsignadas);
 app.post('/recursosentregas', entregasCtrl.registerRecursos);
@@ -100,6 +102,7 @@ app.delete('/devolucion/:idEntrega', devolucionesCtrl.deleteDevolucion);
 
 //customers
 app.post('/registercustomer', customersCtrl.registerCustomers);
+app.post('/regcustomerexcel', customersCtrl.registerCustomerExcel);
 app.get('/allcustomers', customersCtrl.allCustomers);
 app.delete('/customers/:idcustomer', customersCtrl.deleteCustomer);
 

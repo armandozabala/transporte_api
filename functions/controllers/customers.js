@@ -21,6 +21,96 @@ function deleteCustomer(request, response){
   
 }
 
+function registerCustomerExcel(request, response){
+
+    let customer = [];
+   
+    
+    let info = request.body;
+   
+   
+    info.forEach(item => {
+   
+        
+           let entrega = [
+             item[0],//razon social
+             item[1], //nit
+             item[2], //codigo
+             item[3], //cod_detalle
+             item[4], //nombres
+             item[5], //apellidos
+             item[6], //tipo cedula CE
+             item[7], //cedula
+             item[8], //direccion
+             item[9], //telefono
+             item[10], //email
+             item[11], //coordenada_lat
+             item[12], //coordenada_lon
+             item[13], //hora1_desde
+             item[14], //hora1_hasta
+             item[15], //hora2_desde
+             item[16], //hora2_hasta
+             item[17], //id_ciudad
+             item[18] //id_departamento
+           ];
+          
+   
+          customer.push(entrega);
+           
+         
+      
+    });
+   
+   
+   
+   if (customer.length > 0) {
+   
+   
+   connection.query(`INSERT INTO cliente (
+                                          razon_social,
+                                          nit,
+                                          codigo,
+                                          cod_detalle,
+                                          nombres, 
+                                          apellidos, 
+                                          tipo_cedula, 
+                                          cedula, 
+                                          direccion, 
+                                          telefono, 
+                                          email, 
+                                          coordenada_lat, 
+                                          coordenada_lon, 
+                                          hora1_desde,
+                                          hora1_hasta,
+                                          hora2_desde,
+                                          hora2_hasta,
+                                          id_ciudad,
+                                          id_departamento
+                                          ) VALUES ?`, [customer], (error, results, fields) => {
+   
+     //if (results.affectedRows > 0) {
+         response.send({
+             ok : true,
+             msj: 'Register Customer Success',
+             iduser: customer
+         });
+    // }
+    
+   });
+   
+   } else {
+   
+         response.send({
+           ok : false,
+           msj: 'Incorrent register Ruta'
+         });
+   
+   }
+   
+   
+   
+   }
+
 
 function registerCustomers(request, response){
 
@@ -138,5 +228,6 @@ function registerCustomers(request, response){
 module.exports = {
  allCustomers,
  registerCustomers,
- deleteCustomer
+ deleteCustomer,
+ registerCustomerExcel
 }

@@ -82,7 +82,21 @@ function registerVehiculo(request, response){
 
 function allVehiculos(request, response){
 
- connection.query('SELECT * FROM vehiculo', (error, results, fields) => {
+ let sql = `SELECT  v.id_usuario, 
+                    v.id_vehiculo,
+                    u.nombres,
+                    u.apellidos,
+                    v.marca,
+                    v.placas,
+                    v.modelo,
+                    v.id_ruta,
+                    v.fecha_soat,
+                    v.fecha_mecanica,
+                    v.fecha_sanidad
+                    FROM vehiculo v
+                    INNER JOIN users u ON v.id_usuario = u.id`;
+
+ connection.query(sql, (error, results, fields) => {
 
    if (results.length > 0) {
 

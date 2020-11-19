@@ -10,18 +10,32 @@ function deleteUsuarioOperacion(request, response){
 
 
     let usuario_operacion = {
-        id_usuario: request.params.idusuario
+        id_usuario: request.params.id
     }
    
     connection.query('DELETE FROM usuarios_operacion WHERE id_usuario = ?', usuario_operacion.id_usuario, (error, results, fields) => {
       
-   
+
      if (results.affectedRows > 0) {
    
-        response.send({
-            ok : true,
-            msj: 'Delete Usuario-Operacion Success'
-        });
+      connection.query('DELETE FROM users WHERE id = ?', usuario_operacion.id_usuario, (error, results, fields) => {
+
+        if (results.affectedRows > 0) { 
+
+            response.send({
+              ok : true,
+              msj: 'Delete Usuario-Operacion Success'
+          });
+
+        }else{
+
+          response.send({
+            ok : false,
+            msj: 'Usuario ID no exist'
+          });
+        }
+    
+      });
        
      }else{
  
@@ -321,8 +335,10 @@ if (results.length > 0) {
 
 function allUsers(request, response){
 
+  let idOperacion = request.params.idOperacion
 
- connection.query(`SELECT * FROM users`, (error, results, fields) => {
+  //INNER JOIN usuarios_operacion uo ON  us.id = uo.id_usuario AND uo.id_operacion =  ?
+ connection.query(`SELECT * FROM users us INNER JOIN usuarios_operacion uo ON  us.id = uo.id_usuario`, idOperacion, (error, results, fields) => {
 
    if (results.length > 0) {
 
