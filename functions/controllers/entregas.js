@@ -77,78 +77,85 @@ function registerEntregas(request, response){
  
  let info = request.body;
 
-
  info.forEach(item => {
 
-     
-        let entrega = [
-          moment(item[0]).format('YYYY-MM-DD'),
-          item[1] == null ? null : moment(item[1]).format('hh:mm:ss'),
-          item[2] == null ? null : moment(item[2]).format('hh:mm:ss'),
-          item[3] == null ? null : moment(item[3]).format('hh:mm:ss'),
-          item[4] == null ? null : moment(item[4]).format('hh:mm:ss'),
-          item[5],
-          item[6],
-          item[7],
-          item[8],
-          item[9],
-          item[10],
-          item[11],
-          item[12],
-          item[13],
-          item[14] == null ? 0 : item[14],
-          item[15] == null ? 0 : item[15],
-        ];
-       
+  let entrega = [
+    moment(item[0]).format('YYYY-MM-DD'),
+    item[1] == null ? null : moment(item[1]).format('hh:mm:ss'),
+    item[2] == null ? null : moment(item[2]).format('hh:mm:ss'),
+    item[3] == null ? null : moment(item[3]).format('hh:mm:ss'),
+    item[4] == null ? null : moment(item[4]).format('hh:mm:ss'),
+    item[5],
+    item[6],
+    item[7],
+    item[8],
+    item[9],
+    item[10],
+    item[11],
+    item[12],
+    item[13],
+    item[14] == null ? 0 : item[14],
+    item[15] == null ? 0 : item[15],
+  ];
 
-       entregas.push(entrega);
+  
+  entregas.push(entrega);
+
+});
+
+  if (entregas.length >= info.length) {
+
+
+   connection.query(`INSERT INTO entregas (
+                                          fecha_ent,
+                                          hora1_desde,
+                                          hora1_hasta,
+                                          hora2_desde,
+                                          hora2_hasta, 
+                                          id_cliente, 
+                                          id_operacion, 
+                                          observacion, 
+                                          id_mercancia, 
+                                          cantidad_trans, 
+                                          unidades_trans, 
+                                          factura_num, 
+                                          monto, 
+                                          estado,
+                                          latitud,
+                                          longitud
+                                          ) VALUES ?`, [entregas], (error, results, fields) => {
+   
+     //if (results.affectedRows > 0) {
+         response.send({
+             ok : true,
+             msj: 'Register Estado Success',
+             iduser: entregas
+         });
+    // }
+    
+   });
+   
+   } else {
+   
+         response.send({
+           ok : false,
+           msj: 'Incorrent register Entrega'
+         });
+   
+   }
+    
+
+
+       
         
       
    
- });
 
 
 
-if (entregas.length > 0) {
 
 
-connection.query(`INSERT INTO entregas (
-                                       fecha_ent,
-                                       hora1_desde,
-                                       hora1_hasta,
-                                       hora2_desde,
-                                       hora2_hasta, 
-                                       id_cliente, 
-                                       id_operacion, 
-                                       observacion, 
-                                       id_mercancia, 
-                                       cantidad_trans, 
-                                       unidades_trans, 
-                                       factura_num, 
-                                       monto, 
-                                       estado,
-                                       latitud,
-                                       longitud
-                                       ) VALUES ?`, [entregas], (error, results, fields) => {
 
-  //if (results.affectedRows > 0) {
-      response.send({
-          ok : true,
-          msj: 'Register Estado Success',
-          iduser: entregas
-      });
- // }
- 
-});
-
-} else {
-
-      response.send({
-        ok : false,
-        msj: 'Incorrent register Ruta'
-      });
-
-}
 
 
 
